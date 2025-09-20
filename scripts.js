@@ -1,48 +1,34 @@
-const display = document.getElementById('display');
-const buttons = document.querySelectorAll('.buttons button');
-
-let currentExpression = '0'; // Текущее выражение
+const buttons = document.querySelectorAll('.button');
+let resultField = document.getElementById('display');
+let currentExpression = ''; 
 
 function handleButton(button) {
-    const value = button.target.textContent; // Получаем текст кнопки (например, "5", "+")
-    
+    const value = button.target.textContent; 
 
-    
-    if (currentExpression === '0') {
-        currentExpression = value;
-
-
-    } else if (value ==='AC') {
-        currentExpression = '0';
-
-
-        
-    } else if (value ==='=') {
-
-        if (currentExpression.includes("%")) {
-            const numbers = input.textContent.split("%");
-            const res = (numbers[0] / 100) * numbers[1];
-            currentExpression = res;
-        }else {
-
-            currentExpression = eval(currentExpression.replaceAll("×", "*").replaceAll("−", "-").replaceAll("÷", "/").replaceAll("%", ""));
+    if (value === '=') {
+      if (resultField.textContent.includes('%')){
+            let n1 = resultField.textContent.split('%');
+            resultField.textContent = (n1[0] / 100) * n1[1];
+            resultField.textContent += '%';
         }
-    }
-
+        else {
+            resultField.textContent = eval(resultField.textContent.replaceAll("×", "*").replaceAll("−", "-").replaceAll("÷", "/").replaceAll("+", "+"));
+        }
+    } 
+    else if (value === 'AC') {
+      resultField.textContent = '';
+    } 
     else if(value === '%'){
-        currentExpression = eval(currentExpression) + '%';
-
+      resultField.textContent = eval(resultField.textContent.replaceAll("×", "*").replaceAll("−", "-").replaceAll("÷", "/").replaceAll("+", "+")) + '%';
+    }
+    else if(value === '+/-'){
+       resultField.textContent = eval(resultField.textContent.replaceAll("×", "*").replaceAll("−", "-").replaceAll("÷", "/").replaceAll("+", "+"))* -1;
     }
     else {
-        currentExpression += value;
+      resultField.textContent += value;
     }
-    
-    display.textContent = currentExpression;
-
 }
 
 buttons.forEach(button => {
   button.addEventListener('click', handleButton);
-});
-display.textContent = currentExpression;
-
+})
